@@ -1,5 +1,6 @@
 require('./config/config')
 const express = require('express')
+const mongoose = require('mongoose');
 const app = express()
 const bodyParser = require('body-parser')
 
@@ -9,42 +10,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// REQUEST
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-app.get('/user', function(req, res) {
-    res.json('get user')
-})
+// Routes users
+app.use(require('./routes/users'))
 
-app.post('/user', function(req, res) {
-    res.json({
-        body: req.body,
-        msg: 'post user'
-    })
-})
-
-app.put('/user/:id', function(req, res) {
-    let id = req.params.id
-    if (id === undefined) {
-        res.status(400).json({
-            ok: 0,
-            msg: 'Error id user required'
-        })
-    } else {
-        res.json({
-            id,
-            msg: 'update user'
-        })
-    }
-})
-
-app.delete('/user/:id', function(req, res) {
-    let id = req.params.id
-    res.json({
-        id,
-        msg: 'remover user'
-    })
-})
+mongoose.connect('mongodb://localhost:27017/cafe', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+});
 
 app.listen(process.env.PORT, () => {
     console.log('executing server in port ' + process.env.PORT)
