@@ -23,7 +23,8 @@ app.get('/user', function(req, res) {
                 })
             }
 
-            User.count(filters, (err, count) => {
+            // Obtener la cantidad total de registros
+            User.countDocuments(filters, (err, count) => {
                 res.json({
                     ok: 1,
                     err: '',

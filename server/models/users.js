@@ -47,6 +47,7 @@ userSchema.methods.toJSON = function() {
     return userObj;
 }
 
+// Validacion para campos unicos
 userSchema.plugin(uniqueValidator, { message: '{PATH} ya existe' })
 
 module.exports = mongoose.model('User', userSchema)
