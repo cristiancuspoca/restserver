@@ -15,6 +15,6 @@ let stringConnectDB
 if (process.env.NODE_ENV == 'dev') {
     stringConnectDB = 'mongodb://localhost:27017/cafe'
 } else {
-    stringConnectDB = 'mongodb+srv://<user>:<pass>@cluster0-wfifc.mongodb.net/coffe'
+    stringConnectDB = 'mongodb+srv://galileo:kAN4FQLHvVHveXcI@cluster0-wfifc.mongodb.net/coffe'
 }
 process.env.URLDB = stringConnectDB
