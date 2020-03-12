@@ -1,4 +1,4 @@
-require('./config/config')
+require('./config/config_dev')
 const express = require('express')
 const mongoose = require('mongoose');
 const app = express()
