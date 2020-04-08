@@ -3,11 +3,12 @@ const app = express()
 const User = require('../models/users')
 const bcrypt = require('bcrypt')
 const _ = require('underscore')
+const {verifyToken, verifyAdminRole} = require('../middlewares/authentication')
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // REQUEST
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-app.get('/user', function(req, res) {
+app.get('/user', verifyToken, function(req, res) {
     let fromSkip = Number(req.query.from) || 0
     let limit = Number(req.query.limit) || 5
     let filters = { status: true }
@@ -37,7 +38,7 @@ app.get('/user', function(req, res) {
         })
 })
 
-app.post('/user', function(req, res) {
+app.post('/user', [verifyToken, verifyAdminRole], function(req, res) {
     let body = req.body
 
     let user = new User({
@@ -65,14 +66,15 @@ app.post('/user', function(req, res) {
     })
 })
 
-app.put('/user/:id', function(req, res) {
+app.put('/user/:id', [verifyToken, verifyAdminRole], function(req, res) {
     let id = req.params.id
+    // Filter only data to update
     let body = _.pick(req.body, ['name', 'email', 'img', 'role', 'status'])
 
     let options = {
-        new: true,
-        runValidators: true,
-        context: 'query',
+        new: true, // returned updated document
+        runValidators: true, // execute validation
+        context: 'query', // values required in creation not will be required in update E.g password, name
     }
 
     if (id === undefined) {
@@ -115,7 +117,7 @@ app.put('/user/:id', function(req, res) {
     }
 })
 
-app.delete('/user/:id', function(req, res) {
+app.delete('/user/:id', [verifyToken, verifyAdminRole], function(req, res) {
     let id = req.params.id || 0
 
     let options = {
@@ -127,7 +129,7 @@ app.delete('/user/:id', function(req, res) {
     }
 
     //User.findOneAndDelete(query, options, (err, userDB) => {
-    User.findOneAndUpdate(query, { status: false }, { new: true }, (err, userDB) => {
+    User.findOneAndUpdate(query, { status: false }, options, (err, userDB) => {
         if (err) {
             return res.status(400).json({
                 ok: 0,
