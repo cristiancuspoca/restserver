@@ -16,6 +16,11 @@ process.env.EXP_TOKEN = 60 * 60 * 24 * 30
 process.env.SEED_TOKEN = process.env.SEED_TOKEN || 'seed-desa-token'
 
 // ==================
+// Google sign in
+// ==================
+process.env.CLI_GOGL_ID = process.env.CLI_GOGL_ID || '895808471350-7l1q99dqv2n81sjd1e7s1jumpjdffmq4.apps.googleusercontent.com'
+
+// ==================
 // String connect db
 // ==================
 let stringConnectDB
