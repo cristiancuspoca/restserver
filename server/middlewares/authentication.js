@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 let verifyToken = (req, res, next)  => {
@@ -12,7 +11,6 @@ let verifyToken = (req, res, next)  => {
                 msg: 'Operation not allowed'
             })
         }
-
         req.user = decoded.user
         next()
     });
