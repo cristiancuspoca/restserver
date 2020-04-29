@@ -15,7 +15,7 @@ app.get('/product', (req, res) => {
     let filters = _.pick(query, ['name', 'available', 'description', 'unitPrice'])
     filters.available = filters.available === undefined ? true : filters.available
     
-    Product.find(filters, 'name unitPrice description available category user')
+    Product.find(filters, 'name unitPrice description img available category user')
         .skip(fromSkip)
         .limit(limit)
         .sort('avilable') // Order
